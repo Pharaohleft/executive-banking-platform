@@ -1,0 +1,14 @@
+# Security (CRITICAL)
+C:\Users\jenni\OneDrive\Desktop\banking-data-platform\dashboard\.streamlit\secrets.toml
+
+# Python junk
+__pycache__/
+*.pyc
+
+# dbt artifacts (generated files)
+target/
+dbt_packages/
+logs/
+
+# System files
+.DS_Store

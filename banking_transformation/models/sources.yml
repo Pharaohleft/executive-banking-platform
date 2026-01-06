@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: banking_source
+    database: BANKING_DB
+    schema: BRONZE
+    tables:
+      - name: transactions

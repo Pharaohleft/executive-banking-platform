@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: fact_transactions
+    description: "Final transaction table joined with customer data"
+    columns:
+      - name: transaction_id
+        description: "Primary key of the transaction"
+        tests:
+          - unique
+          - not_null
+      
+      - name: amount
+        description: "Transaction amount in USD"
+        tests:
+          - not_null
+
+      - name: operation
+        description: "Type of transaction"
+        tests:
+          - accepted_values:
+              values: ['credit', 'debit']
+
+  - name: dim_customers
+    description: "Cleaned customer dimension"
+    columns:
+      - name: account_id
+        tests:
+          - unique
+          - not_null
