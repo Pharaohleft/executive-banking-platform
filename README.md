@@ -22,3 +22,5 @@ An end-to-end data engineering pipeline that processes raw transaction data into
 2.  Add your Snowflake credentials to `.streamlit/secrets.toml`.
 3.  Run the pipeline: `dbt run`
 4.  Launch the app: `streamlit run app.py`
+
+5.  Snowflake worksheet link: https://app.snowflake.com/nikwdun/rbb38448/w1vInzBE1rNH#query
