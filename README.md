@@ -33,19 +33,28 @@ Current View: TRANSACTIONS_FLATTENED (Created in Snowflake) successfully extract
 
 Pending Item: The amount column is Base64 encoded (e.g., "ASaP") and needs decoding in the Silver layer.
 
+####  Issue-1-fix
+<img width="926" height="656" alt="base64-to-int" src="https://github.com/user-attachments/assets/f5718117-766b-4530-b233-cbb8b87df881" />
+
 ---
 
 ###  Workflow
 1.  **Source:** A simulated Banking App writes transactions to a **PostgreSQL** database. Used Dbeaver to create dataset.
 2.  **Ingestion (CDC):** **Debezium** (running on Kafka Connect) listens to the Postgres Write-Ahead Log (WAL) and streams changes to **Apache Kafka**.
 3.  **Storage:** Kafka sinks the raw stream into **Amazon S3** (Simulated with MinIO) as JSON.
-4.  **Warehousing:** **Snowflake** ingests the data via **Snowpipe** into the **Bronze Layer**.
-5.  **Transformation:** **dbt (data build tool)** orchestrates the transformation:
+4. <img width="888" height="1018" alt="Screenshot 2026-01-07 000102" src="https://github.com/user-attachments/assets/e241a163-ed4c-489d-927f-4197bdc2c8c0" />
+
+5.  **Warehousing:** **Snowflake** ingests the data via **Snowpipe** into the **Bronze Layer**.
+6.  **Transformation:** **dbt (data build tool)** orchestrates the transformation:
     * **Silver:** Cleaning and deduplication.
     * **Gold:** Applying **SCD Type 2** logic to track historical changes (e.g., address updates).
-6.  **Orchestration:** **Apache Airflow** manages the dependency chain.
-7.  **Serving:** **PowerBI** connects via Direct Query for live dashboards.
+  <img width="1333" height="1076" alt="tranformation-test" src="https://github.com/user-attachments/assets/b630c76d-eac7-432b-951b-e24caa98e573" />
 
+      
+7.  **Orchestration:** **Apache Airflow** manages the dependency chain.
+   <img width="916" height="956" alt="airflow orc" src="https://github.com/user-attachments/assets/cb163693-130c-4021-bf10-39d7663daf3c" />
+
+8.  **Serving:** **PowerBI** connects via Direct Query for live dashboards. Or streamlit dashboards
 
 ---
 
@@ -60,6 +69,9 @@ Pending Item: The amount column is Base64 encoded (e.g., "ASaP") and needs decod
 * **DevOps:** Docker, GitHub Actions (CI/CD)
 
 ---
+
+### 📊 Final Data Output
+<img width="968" height="1095" alt="executive dashboard" src="https://github.com/user-attachments/assets/c70ebc93-f3b0-45a3-8a75-78184dc7e211" />
 
 ###  Key Technical Features
 
