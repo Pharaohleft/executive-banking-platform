@@ -3,7 +3,7 @@
 An end-to-end data engineering pipeline that processes raw transaction data into an interactive executive dashboard.
 
 ##  Architecture
-**Snowflake** (Data Warehouse) ➡️ **dbt** (Transformation & Testing) ➡️ **Streamlit** (Visualization)
+**Snowflake** (Data Warehouse) ➡️ **dbt** (Transformation & Testing) ➡️ **Streamlit** (Visualization)/ POWER BI
 <img width="3397" height="6964" alt="Untitled diagram-2026-01-07-054332" src="https://github.com/user-attachments/assets/50701288-08b4-4738-a5d9-e0af5944d675" />
 
 ##  Key Features
