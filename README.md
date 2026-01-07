@@ -16,7 +16,7 @@ Using **Change Data Capture (CDC)**, this system captures every `INSERT`, `UPDAT
 ![Banking Architecture Diagram](architecture_banking.png)
 *(Note: Generate the diagram using the Mermaid code provided previously and save it as architecture_banking.png)*
 
-1.  **Source:** A simulated Banking App writes transactions to a **PostgreSQL** database.
+1.  **Source:** A simulated Banking App writes transactions to a **PostgreSQL** database. Used Dbeaver to create dataset.
 2.  **Ingestion (CDC):** **Debezium** (running on Kafka Connect) listens to the Postgres Write-Ahead Log (WAL) and streams changes to **Apache Kafka**.
 3.  **Storage:** Kafka sinks the raw stream into **Amazon S3** (Simulated with MinIO) as JSON.
 4.  **Warehousing:** **Snowflake** ingests the data via **Snowpipe** into the **Bronze Layer**.
