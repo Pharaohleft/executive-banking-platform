@@ -4,6 +4,7 @@ An end-to-end data engineering pipeline that processes raw transaction data into
 
 ##  Architecture
 **Snowflake** (Data Warehouse) ➡️ **dbt** (Transformation & Testing) ➡️ **Streamlit** (Visualization)
+<img width="3397" height="6964" alt="Untitled diagram-2026-01-07-054332" src="https://github.com/user-attachments/assets/50701288-08b4-4738-a5d9-e0af5944d675" />
 
 ##  Key Features
 * **Medallion Architecture:** Raw data (Bronze) is cleaned and aggregated into Business-Ready tables (Gold).
