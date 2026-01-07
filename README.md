@@ -13,8 +13,9 @@ Using **Change Data Capture (CDC)**, this system captures every `INSERT`, `UPDAT
 *(The flow from transactional chaos to analytical order)*
 <img width="3397" height="6964" alt="Untitled diagram-2026-01-07-054332" src="https://github.com/user-attachments/assets/cd2a1db9-f460-47ca-acc5-26b10f5220a3" />
 
-![Banking Architecture Diagram](architecture_banking.png)
 *(Note: Generate the diagram using the Mermaid code provided previously and save it as architecture_banking.png)*
+
+---
 
 1.  **Source:** A simulated Banking App writes transactions to a **PostgreSQL** database. Used Dbeaver to create dataset.
 2.  **Ingestion (CDC):** **Debezium** (running on Kafka Connect) listens to the Postgres Write-Ahead Log (WAL) and streams changes to **Apache Kafka**.
