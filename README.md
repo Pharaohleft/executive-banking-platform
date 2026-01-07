@@ -13,10 +13,29 @@ Using **Change Data Capture (CDC)**, this system captures every `INSERT`, `UPDAT
 *(The flow from transactional chaos to analytical order)*
 <img width="3397" height="6964" alt="Untitled diagram-2026-01-07-054332" src="https://github.com/user-attachments/assets/cd2a1db9-f460-47ca-acc5-26b10f5220a3" />
 
-*(Note: Generate the diagram using the Mermaid code provided previously and save it as architecture_banking.png)*
+
 
 ---
 
+1.Infrastructure Setup
+Containerization: The operational stack (Airflow Webserver, Scheduler, Triggerer, Postgres, MinIO) is fully containerized via Docker Compose.
+Networking: Airflow communicates with the MinIO Object Storage via an internal Docker network on http://minio:9000.
+
+2. The Pipeline (banking_minio_to_snowflake_final)
+Trigger: Manual or Scheduled.
+Task 1 (download_minio): Downloads transactions.json from MinIO bucket banking-data.
+Task 2 (load_snowflake): Uploads to Snowflake Stage and loads into BANKING_DB.BRONZE.TRANSACTIONS.
+
+3. The Data Structure (Crucial Detail)
+Format: JSON (CDC / Debezium format).
+Schema: Data is nested inside an {"after": { ... }} object.
+Current View: TRANSACTIONS_FLATTENED (Created in Snowflake) successfully extracts id, account_id, and created_at.
+
+Pending Item: The amount column is Base64 encoded (e.g., "ASaP") and needs decoding in the Silver layer.
+
+---
+
+###  Workflow
 1.  **Source:** A simulated Banking App writes transactions to a **PostgreSQL** database. Used Dbeaver to create dataset.
 2.  **Ingestion (CDC):** **Debezium** (running on Kafka Connect) listens to the Postgres Write-Ahead Log (WAL) and streams changes to **Apache Kafka**.
 3.  **Storage:** Kafka sinks the raw stream into **Amazon S3** (Simulated with MinIO) as JSON.
@@ -26,6 +45,7 @@ Using **Change Data Capture (CDC)**, this system captures every `INSERT`, `UPDAT
     * **Gold:** Applying **SCD Type 2** logic to track historical changes (e.g., address updates).
 6.  **Orchestration:** **Apache Airflow** manages the dependency chain.
 7.  **Serving:** **PowerBI** connects via Direct Query for live dashboards.
+
 
 ---
 
@@ -63,6 +83,16 @@ Banks must know *where* a customer lived 6 months ago to detect fraud.
 * **Business Intelligence:** Interactive dashboard tracking Real-time Transaction Volume and Credit/Debit splits.
 
 ---
+###   Technical Challenges & Solutions
+
+1. Parsing Nested CDC Logs Raw data arrives from Debezium in a complex JSON format.
+Challenge: The actual row data is buried inside a nested payload.after object, while the before object contains the previous state (crucial for audits).
+Solution: Implemented a Flattening Logic in the Snowflake Stage to extract id, account_id, and created_at into a tabular structure.
+
+2. Handling Base64 Encoded Decimals
+Challenge: Debezium serializes Postgres NUMERIC/DECIMAL types (like the amount column) as Base64 encoded strings (e.g., "ASaP") to preserve precision, rather than standard JSON numbers.
+Future Improvement: A custom decoding function (User Defined Function or dbt macro) is required in the Silver Layer to convert these Base64 strings back into Float/Decimal types for aggregation.
+
 
 ##  How to Run
 1.  Clone the repo.
